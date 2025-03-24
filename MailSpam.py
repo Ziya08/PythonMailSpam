@@ -16,7 +16,10 @@ def spam_attack(sender_email, password, target_email, message_body, count=40):
             subject = "SPAM MAIL"
             body = f"{message_body} - Spam mail number {i+1}"
             message = f"Subject: {subject}\n\n{body}"
-            
+
+            # Mesajı UTF-8 ile kodla
+            message = message.encode('utf-8')
+
             # E-posta gönder
             server.sendmail(sender_email, target_email, message)
             print(f"Spam mail {i+1} gönderildi.")
